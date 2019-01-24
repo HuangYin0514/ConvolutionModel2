@@ -22,3 +22,4 @@ if __name__ == '__main__':
     content_image = scipy.misc.imread("images/louvre.jpg")
     imshow(content_image)
     plt.show()
+    aaa
