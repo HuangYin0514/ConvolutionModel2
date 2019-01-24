@@ -38,3 +38,5 @@ if __name__ == '__main__':
         )
         loss = triplet_loss(y_true, y_pred)
         print("loss = ", str(loss.eval()))
+
+
