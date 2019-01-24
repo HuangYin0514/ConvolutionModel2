@@ -72,3 +72,31 @@ def verify(image_path, identity, database, model):
         print("It's not " + str(identity) + ", please go away")
         door_open = False
     return dist, door_open
+
+
+def who_is_it(image_path, database, model):
+    """
+        Implements face recognition for the happy house by finding who is the person on the image_path image.
+
+        Arguments:
+        image_path -- path to an image
+        database -- database containing image encodings along with the name of the person on the image
+        model -- your Inception model instance in Keras
+
+        Returns:
+        min_dist -- the minimum distance between image_path encoding and the encodings from the database
+        identity -- string, the name prediction for the person on image_path
+        """
+    encoding = img_to_encoding(image_path, model)
+    min_dist = 100
+
+    for (name, db_enc) in database.items():
+        dist = np.linalg.norm(encoding - db_enc)
+        if dist < min_dist:
+            min_dist = dist
+            identity = name
+
+    if min_dist > 0.7:
+        print("Not in the database.")
+    else:
+        print("it's " + str(identity) + ", the distance is " + str(min_dist))

@@ -68,3 +68,5 @@ if __name__ == '__main__':
     verify("images/camera_0.jpg", "younes", database, FRmodel)
     # It's not kian, please go away
     verify("images/camera_2.jpg", "kian", database, FRmodel)
+    # it's younes, the distance is 0.6710074
+    who_is_it("images/camera_0.jpg", database, FRmodel)
