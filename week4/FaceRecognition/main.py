@@ -48,7 +48,7 @@ if __name__ == '__main__':
     print("Total Params = ", FRmodel.count_params())
     FRmodel.compile(optimizer="adam", loss=triplet_loss, metrics=['accuracy'])
     # load weights
-    # load_weights_from_FaceNet(FRmodel)
+    load_weights_from_FaceNet(FRmodel)
 
     database = {}
     database["danielle"] = img_to_encoding("images/danielle.png", FRmodel)
@@ -63,3 +63,8 @@ if __name__ == '__main__':
     database["felix"] = img_to_encoding("images/felix.jpg", FRmodel)
     database["benoit"] = img_to_encoding("images/benoit.jpg", FRmodel)
     database["arnaud"] = img_to_encoding("images/arnaud.jpg", FRmodel)
+
+    # It`s younes, welcome home!
+    verify("images/camera_0.jpg", "younes", database, FRmodel)
+    # It's not kian, please go away
+    verify("images/camera_2.jpg", "kian", database, FRmodel)

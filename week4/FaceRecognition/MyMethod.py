@@ -49,7 +49,7 @@ def triplet_loss(y_true, y_pred, alpha=0.2):
     return loss
 
 
-def verify(image_path, identity, database, mdoel):
+def verify(image_path, identity, database, model):
     """
         Function that verifies if the person on the "image_path" image is "identity".
 
@@ -63,7 +63,7 @@ def verify(image_path, identity, database, mdoel):
         dist -- distance between the image_path and the image of "identity" in the database.
         door_open -- True, if the door should open. False otherwise.
         """
-    encoding = img_to_encoding(image_path, Model)
+    encoding = img_to_encoding(image_path, model)
     dist = np.linalg.norm(encoding - database[identity])
     if dist < 0.7:
         print("It`s " + str(identity) + ", welcome home!")
