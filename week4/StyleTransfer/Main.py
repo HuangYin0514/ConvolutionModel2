@@ -16,10 +16,11 @@ import tensorflow as tf
 from week4.StyleTransfer.MyMethod import *
 
 if __name__ == '__main__':
+    # load model
     model = load_vgg_model("pretrained-model/imagenet-vgg-verydeep-19.mat")
     print(model)
 
+    # look image
     content_image = scipy.misc.imread("images/louvre.jpg")
     imshow(content_image)
     plt.show()
-    aaa
