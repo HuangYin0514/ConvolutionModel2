@@ -66,7 +66,7 @@ def compute_layer_style_cost(a_S, a_G):
     return J_style_layer
 
 
-def compute_style_cost(model, STYLE_LAYERS):
+def compute_style_cost(model, STYLE_LAYERS, sess):
     """
        Computes the overall style cost from several chosen layers
 
@@ -102,6 +102,22 @@ def total_cost(J_content, J_style, alpha=10, beta=40):
         Returns:
         J -- total cost as defined by the formula above.
         """
-    J = alpha * J_content + beta + J_style
+    J = alpha * J_content + beta * J_style
     return J
 
+
+def model_nn(sess, input_image, model, train_step, J, J_content, J_style, num_iteration=200):
+    sess.run(tf.global_variables_initializer())
+    sess.run(model['input'].assign(input_image))
+    for i in range(num_iteration):
+        sess.run(train_step)
+        generated_image = sess.run(model['input'])
+        if i % 20 == 0:
+            Jt, Jc, Js = sess.run([J, J_content, J_style])
+            print("Iteration " + str(i) + " :")
+            print("total cost = " + str(Jt))
+            print("content cost = " + str(Jc))
+            print("style cost = " + str(Js))
+            save_image("output/" + str(i) + ".png", generated_image)
+    save_image('output/generated_image.jpg', generated_image)
+    return generated_image
