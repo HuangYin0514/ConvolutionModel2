@@ -31,3 +31,16 @@ def compute_content_cost(a_C, a_G):
     a_G_unrolled = tf.transpose(a_G)
     J_content = (1 / (4 * n_H * n_W * n_C)) * tf.reduce_sum(tf.pow((a_G_unrolled - a_C_unrolled), 2))
     return J_content
+
+
+def gram_matrix(A):
+    """
+        Argument:
+        A -- matrix of shape (n_C, n_H*n_W)
+
+        Returns:
+        GA -- Gram matrix of A, of shape (n_C, n_C)
+        """
+    GA = tf.matmul(A, tf.transpose(A))
+    return GA
+
