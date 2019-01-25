@@ -29,7 +29,7 @@ def compute_content_cost(a_C, a_G):
     m, n_H, n_W, n_C = a_G.get_shape().as_list()
     a_C_unrolled = tf.transpose(a_C)
     a_G_unrolled = tf.transpose(a_G)
-    J_content = (1 / (4 * n_H * n_W * n_C)) * tf.reduce_sum(tf.pow((a_G_unrolled - a_C_unrolled), 2))
+    J_content = (1. / (4 * n_H * n_W * n_C)) * tf.reduce_sum(tf.pow((a_G_unrolled - a_C_unrolled), 2))
     return J_content
 
 
@@ -44,3 +44,23 @@ def gram_matrix(A):
     GA = tf.matmul(A, tf.transpose(A))
     return GA
 
+
+def compute_layer_style_cost(a_S, a_G):
+    """
+        Arguments:
+        a_S -- tensor of dimension (1, n_H, n_W, n_C), hidden layer activations representing style of the image S
+        a_G -- tensor of dimension (1, n_H, n_W, n_C), hidden layer activations representing style of the image G
+
+        Returns:
+        J_style_layer -- tensor representing a scalar value, style cost defined above by equation (2)
+        """
+    m, n_H, n_W, n_C = a_G.get_shape().as_list()
+    a_S = tf.transpose(tf.reshape(a_S, [n_H * n_W, n_C]))
+    a_G = tf.transpose(tf.reshape(a_G, [n_H * n_W, n_C]))
+
+    GS = gram_matrix(a_S)
+    GG = gram_matrix(a_G)
+
+    J_style_layer = (1. / (4 * (n_H * n_W) ** 2 * n_C ** 2)) * tf.reduce_sum(tf.pow((GS - GG), 2))
+
+    return J_style_layer
