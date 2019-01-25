@@ -44,7 +44,7 @@ if __name__ == '__main__':
         GA = gram_matrix(A)
         print("GA = " + str(GA.eval()))
         
-      """
+    
     # test compute_layer_style_cost
     tf.reset_default_graph()
     with tf.Session() as test:
@@ -53,3 +53,10 @@ if __name__ == '__main__':
         a_G = tf.random_normal([1, 4, 4, 3], mean=1, stddev=4)
         J_style_layer = compute_layer_style_cost(a_S, a_G)
         print("GA = " + str(J_style_layer.eval()))
+         """
+
+    STYLE_LAYERS = [('conv1_1', 0.2),
+                    ('conv2_1', 0.2),
+                    ('conv3_1', 0.2),
+                    ('conv4_1', 0.2),
+                    ('conv5_1', 0.2)]

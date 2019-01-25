@@ -64,3 +64,44 @@ def compute_layer_style_cost(a_S, a_G):
     J_style_layer = (1. / (4 * (n_H * n_W) ** 2 * n_C ** 2)) * tf.reduce_sum(tf.pow((GS - GG), 2))
 
     return J_style_layer
+
+
+def compute_style_cost(model, STYLE_LAYERS):
+    """
+       Computes the overall style cost from several chosen layers
+
+       Arguments:
+       model -- our tensorflow model
+       STYLE_LAYERS -- A python list containing:
+                           - the names of the layers we would like to extract style from
+                           - a coefficient for each of them
+
+       Returns:
+       J_style -- tensor representing a scalar value, style cost defined above by equation (2)
+       """
+    J_style = 0
+    for layer_name, coeff in STYLE_LAYERS:
+        out = model[layer_name]
+        a_S = sess.run(out)
+        a_G = out
+        J_style_layer = compute_layer_style_cost(a_S, a_G)
+        J_style += coeff * J_style_layer
+    return J_style
+
+
+def total_cost(J_content, J_style, alpha=10, beta=40):
+    """
+        Computes the total cost function
+
+        Arguments:
+        J_content -- content cost coded above
+        J_style -- style cost coded above
+        alpha -- hyperparameter weighting the importance of the content cost
+        beta -- hyperparameter weighting the importance of the style cost
+
+        Returns:
+        J -- total cost as defined by the formula above.
+        """
+    J = alpha * J_content + beta + J_style
+    return J
+
