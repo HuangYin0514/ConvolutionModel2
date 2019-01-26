@@ -74,19 +74,25 @@ if __name__ == '__main__':
                     ('conv4_1', 0.2),
                     ('conv5_1', 0.2)]
 
+    # 初始化
     tf.reset_default_graph()
     sess = tf.InteractiveSession()
+
+    # 加载两张照片
     content_image = scipy.misc.imread("images/louvre_small.jpg")
     content_image = reshape_and_normalize_image(content_image)
-
     style_image = scipy.misc.imread("images/monet.jpg")
     style_image = reshape_and_normalize_image(style_image)
-    generated_image = generate_noise_image(content_image)
-    imshow(generated_image[0])
-    plt.show()
 
+    #对结果照片初始化
+    generated_image = generate_noise_image(content_image)
+    # imshow(generated_image[0])
+    # plt.show()
+
+    # 加载模型参数
     model = load_vgg_model("pretrained-model/imagenet-vgg-verydeep-19.mat")
 
+    # 计算J
     sess.run(model["input"].assign(content_image))
     out = model['conv4_2']
     a_C = sess.run(out)
@@ -95,6 +101,7 @@ if __name__ == '__main__':
 
     sess.run(model["input"].assign(style_image))
     J_style = compute_style_cost(model, STYLE_LAYERS, sess)
+
     J = total_cost(J_content, J_style, alpha=10, beta=40)
 
     optimizer = tf.train.AdamOptimizer(2.0)

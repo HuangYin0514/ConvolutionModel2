@@ -106,7 +106,7 @@ def total_cost(J_content, J_style, alpha=10, beta=40):
     return J
 
 
-def model_nn(sess, input_image, model, train_step, J, J_content, J_style, num_iteration=200):
+def model_nn(sess, input_image, model, train_step, J, J_content, J_style, num_iteration=3):
     sess.run(tf.global_variables_initializer())
     sess.run(model['input'].assign(input_image))
     for i in range(num_iteration):
